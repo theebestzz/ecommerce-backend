@@ -35,7 +35,7 @@ const updateProduct = asyncHandler(async (req, res) => {
 
 // Delete a product
 const deleteProduct = asyncHandler(async (req, res) => {
-  const id = req.params;
+  const { id } = req.params;
   validateMongoDbId(id);
   try {
     const deleteProduct = await Product.findOneAndDelete(id);
@@ -60,7 +60,9 @@ const getProduct = asyncHandler(async (req, res) => {
 // Get all product
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
-    const getAllProducts = await Product.find();
+    const getAllProducts = await Product.where("category").equals(
+      req.query.category
+    );
     res.json(getAllProducts);
   } catch (error) {
     throw new Error(error);
